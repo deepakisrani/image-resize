@@ -4,11 +4,11 @@ const sharp = require('sharp');
 const rootPath = 'images';
 const originalFiles = '0x0';
 
-const processImage = async function(fileName, requestFormat, width, height) {
+const processImage = async function(domain, fileName, requestFormat, width, height) {
     
-    var requestPath = `${rootPath}/${width}x${height}`;
+    var requestPath = `${rootPath}/${width}x${height}/${domain}`;
     if (!fs.existsSync(requestPath)){
-        fs.mkdirSync(requestPath);
+        fs.mkdirSync(requestPath, { recursive: true });
     }
 
     let requestFileName = fileName;
@@ -21,7 +21,7 @@ const processImage = async function(fileName, requestFormat, width, height) {
     const outputPath = `${requestPath}/${requestFileName}`;
 
     if(!fs.existsSync(outputPath)) {
-        const originalPath = `${rootPath}/${originalFiles}/${fileName}`;
+        const originalPath = `${rootPath}/${originalFiles}/${domain}/${fileName}`;
         await transformFile(originalPath, requestFormat, width, height, outputPath);
     }
 
@@ -47,11 +47,11 @@ const transformFile = async function(originalPath, requestFormat, width, height,
     await transform.toFile(outputPath);
 }
 
-const isValidFile = function(fileName) {
+const isValidFile = function(domain, fileName) {
     let valid = false;
 
     try {
-        valid = fs.existsSync(`${rootPath}/${originalFiles}/${fileName}`);
+        valid = fs.existsSync(`${rootPath}/${originalFiles}/${domain}/${fileName}`);
     } catch(err) {
         console.error(err)
     }

@@ -1,14 +1,20 @@
 const validFormats = ['jpg', 'png', 'webp'];
 
 const getRequestDetails = function(dimensions, fileName) {
-    const dimensionDetails = dimensions.split('x');    
-    let validRequest = dimensionDetails.length === 2;
-    let width = validRequest ? parseInt(dimensionDetails[0]) : null;
-    let height = validRequest ? parseInt(dimensionDetails[1]) : null;
+    let width = null, height = null, originalFormat = null, validRequest = false, validFormat = false;
 
-    const imageDetails = fileName.split('.');
-    let originalFormat = imageDetails[imageDetails.length - 1];
-    let validFormat = isValidFormat(originalFormat);
+    if(dimensions && fileName) {
+        const dimensionDetails = dimensions.split('x');
+        const imageDetails = fileName.split('.');
+        validRequest = (dimensionDetails.length === 2) && (imageDetails.length === 2);
+        
+        if(validRequest) {
+            width = parseInt(dimensionDetails[0]);
+            height = parseInt(dimensionDetails[1]);
+            originalFormat = imageDetails[imageDetails.length - 1];
+            validFormat = isValidFormat(originalFormat);
+        }   
+    }
 
     return { height, width, originalFormat, validFormat, validRequest };
 };
