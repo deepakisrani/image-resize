@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  images:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - webnodemodules:/app/node_modules
+    command: npm run watch
+
+volumes:
+  webnodemodules:
