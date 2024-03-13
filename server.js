@@ -24,6 +24,10 @@ server.get('/:dimensions/:domain/:img', async (req, res) => {
     streamData(responsePath).pipe(res);
 });
 
+server.get('/health', async (req, res) => {
+    res.send('ok')
+});
+
 server.listen(port, () => {
     console.log(`Server started on port ${port}!`);
 });
